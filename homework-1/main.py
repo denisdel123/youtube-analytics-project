@@ -1,5 +1,7 @@
 from src.channel import Channel
+import os
 
+KEY_YOUTUBE = os.getenv("API_KEY_YOUTUBE")
 if __name__ == '__main__':
     moscowpython = Channel('UC-OVMPlMA3-YCIeg4z5z23A')
     moscowpython.print_info()
