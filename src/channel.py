@@ -1,11 +1,12 @@
 import json
 import os
+from pathlib import Path
+
+from dotenv import load_dotenv
 from googleapiclient.discovery import build
-import requests
 
-KEY_YOUTUBE = os.getenv('API_KEY_YOUTUBE')
-api_key: str = os.environ.get("API_KEY_YOUTUBE")
-
+load_dotenv(Path(__file__).parent.parent.joinpath("data").joinpath(".env"))
+api_key: str = os.environ.get('API_KEY_YOUTUBE')
 
 
 class Channel:
