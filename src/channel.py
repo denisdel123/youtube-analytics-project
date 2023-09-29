@@ -1,6 +1,11 @@
+import json
 import os
 from googleapiclient.discovery import build
-value = os.getenv("API_KEY_YOUTUBE")
+import requests
+
+KEY_YOUTUBE = os.getenv('API_KEY_YOUTUBE')
+api_key: str = os.environ.get("API_KEY_YOUTUBE")
+
 
 
 class Channel:
@@ -9,11 +14,11 @@ class Channel:
     def __init__(self, channel_id: str) -> None:
         """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
         self.channel_id = channel_id
-        youtube = build("youtube", "v3", developerKey=value)
-        request = youtube.vidios().list(part="snippet,contentDetails", id=self.channel_id)
-        response = request.execute()
-        print(response)
 
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
-        pass
+        self.channel_id = self.channel_id
+        youtube = build("youtube", "v3", developerKey=api_key)
+        request = youtube.channels().list(id=self.channel_id, part='snippet,statistics').execute()
+
+        print(json.dumps(request, indent=2, ensure_ascii=False))
