@@ -22,9 +22,30 @@ class Channel:
         self.name: str = result["kind"]
         self.title: str = result["snippet"]["title"]
         self.url: str = result["snippet"]["thumbnails"]["default"]["url"]
-        self.count_subscribers = result["statistics"]["subscriberCount"]
-        self.video_count: str = result["statistics"]["videoCount"]
-        self.views: str = result["statistics"]["viewCount"]
+        self.count_subscribers: int = result["statistics"]["subscriberCount"]
+        self.video_count: int = result["statistics"]["videoCount"]
+        self.views: int = result["statistics"]["viewCount"]
+
+    def __str__(self):
+        return f"{self.title} {self.url}"
+
+    def __add__(self, other):
+        return int(self.views) + int(other.views)
+
+    def __sub__(self, other):
+        return int(self.views) - int(other.views)
+
+    def __lt__(self, other):
+        return self.views < other.views
+
+    def __le__(self, other):
+        return self.views <= other.views
+
+    def __gt__(self, other):
+        return self.views > other.views
+
+    def __ge__(self, other):
+        return self.views >= other.views
 
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
@@ -35,7 +56,6 @@ class Channel:
 
     @classmethod
     def get_service(cls):
-
         return cls
 
     def to_json(self, way) -> None:
@@ -44,8 +64,8 @@ class Channel:
             "name": self.name,
             "title": self.title,
             "url": self.url,
-            "subscriberCount": self.count_subscribers,
-            "viewCount": self.views
+            "subscriberCount": int(self.count_subscribers),
+            "viewCount": int(self.views)
         }
 
         with open(way, "r", encoding='utf8') as file:
