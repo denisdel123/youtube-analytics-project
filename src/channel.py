@@ -15,11 +15,41 @@ class Channel:
     def __init__(self, channel_id: str) -> None:
         """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
         self.channel_id = channel_id
+        youtube = build("youtube", "v3", developerKey=api_key)
+        request = youtube.channels().list(id=channel_id, part='snippet,statistics').execute()
+        result = request["items"][0]
+
+        self.name: str = result["kind"]
+        self.title: str = result["snippet"]["title"]
+        self.url: str = result["snippet"]["thumbnails"]["default"]["url"]
+        self.count_subscribers = result["statistics"]["subscriberCount"]
+        self.video_count: str = result["statistics"]["videoCount"]
+        self.views: str = result["statistics"]["viewCount"]
 
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
-        self.channel_id = self.channel_id
+
         youtube = build("youtube", "v3", developerKey=api_key)
         request = youtube.channels().list(id=self.channel_id, part='snippet,statistics').execute()
-
         print(json.dumps(request, indent=2, ensure_ascii=False))
+
+    @classmethod
+    def get_service(cls):
+
+        return cls
+
+    def to_json(self, way) -> None:
+        j_list = {
+            "id": self.channel_id,
+            "name": self.name,
+            "title": self.title,
+            "url": self.url,
+            "subscriberCount": self.count_subscribers,
+            "viewCount": self.views
+        }
+
+        with open(way, "r", encoding='utf8') as file:
+            res = json.load(file)
+            res.append(j_list)
+        with open(way, 'w', encoding='utf8') as f:
+            json.dump(res, f, ensure_ascii=False, indent=4)
