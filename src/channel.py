@@ -22,9 +22,9 @@ class Channel:
         self.name: str = result["kind"]
         self.title: str = result["snippet"]["title"]
         self.url: str = result["snippet"]["thumbnails"]["default"]["url"]
-        self.count_subscribers: int = result["statistics"]["subscriberCount"]
-        self.video_count: int = result["statistics"]["videoCount"]
-        self.views: int = result["statistics"]["viewCount"]
+        self.count_subscribers: str = result["statistics"]["subscriberCount"]
+        self.video_count: str = result["statistics"]["videoCount"]
+        self.views: str = result["statistics"]["viewCount"]
 
     def __str__(self):
         return f"{self.title} {self.url}"
@@ -64,8 +64,8 @@ class Channel:
             "name": self.name,
             "title": self.title,
             "url": self.url,
-            "subscriberCount": int(self.count_subscribers),
-            "viewCount": int(self.views)
+            "subscriberCount": self.count_subscribers,
+            "viewCount": self.views
         }
 
         with open(way, "r", encoding='utf8') as file:
