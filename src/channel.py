@@ -11,10 +11,10 @@ api_key: str = os.environ.get('API_KEY_YOUTUBE')
 
 class Channel:
     """Класс для ютуб-канала"""
-
+    __channel_id = ''
     def __init__(self, channel_id: str) -> None:
         """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
-        self.channel_id = channel_id
+        self.__channel_id = channel_id
         youtube = build("youtube", "v3", developerKey=api_key)
         request = youtube.channels().list(id=channel_id, part='snippet,statistics').execute()
         result = request["items"][0]
@@ -51,16 +51,18 @@ class Channel:
         """Выводит в консоль информацию о канале."""
 
         youtube = build("youtube", "v3", developerKey=api_key)
-        request = youtube.channels().list(id=self.channel_id, part='snippet,statistics').execute()
+        request = youtube.channels().list(id=self.__channel_id, part='snippet,statistics').execute()
         print(json.dumps(request, indent=2, ensure_ascii=False))
 
     @classmethod
     def get_service(cls):
-        return cls
+        youtube = build("youtube", "v3", developerKey=api_key)
+        request = youtube.channels().list(id='UC-OVMPlMA3-YCIeg4z5z23A', part='snippet,statistics').execute()
+        return request
 
     def to_json(self, way) -> None:
         j_list = {
-            "id": self.channel_id,
+            "id": self.__channel_id,
             "name": self.name,
             "title": self.title,
             "url": self.url,
