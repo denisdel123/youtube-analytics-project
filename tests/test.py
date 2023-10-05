@@ -29,11 +29,18 @@ def test_lt(channel, channel2):
 
 
 def test_le_lt(channel, channel2):
-    assert channel > channel2 == False
-    assert channel >= channel2 == False
-    assert channel < channel2 == True
-    assert channel <= channel2 == True
-    assert channel == channel2 == False
+    channel.views = 100
+    channel2.views = 50
+    assert channel > channel2
+    channel.views = 100
+    channel2.views = 100
+    assert channel >= channel2
+    channel.views = 50
+    channel2.views = 60
+    assert channel < channel2
+    channel.views = 50
+    channel2.views = 50
+    assert channel <= channel2
 
 
 @pytest.fixture()
