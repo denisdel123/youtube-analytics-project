@@ -1,6 +1,9 @@
+import datetime
+
 import pytest
 from src.channel import Channel
 from src.video import Video, PLVideo
+from src.playlist import PlayList
 
 
 @pytest.fixture()
@@ -64,3 +67,18 @@ def test_plvideo(plvideo_c):
     assert plvideo_c.id_play == 'PLv_zOGKKxVph_8g2Mqc3LMhj0M_BfasbC'
     assert plvideo_c.id_video == '4fObz_qw9u4'
     assert plvideo_c.views_video >= '680'
+
+
+@pytest.fixture()
+def playlist_class():
+    return PlayList('PLv_zOGKKxVpj-n2qLkEM2Hj96LO6uqgQw')
+
+
+def test_get_info_for_playlist(playlist_class):
+    assert str(playlist_class.total_duration) == '1:49:52'
+    assert isinstance(playlist_class.total_duration, datetime.timedelta)
+    assert playlist_class.total_duration.total_seconds() == 6592.0
+
+
+def test_show_best_video(playlist_class):
+    assert playlist_class.show_best_video() == "https://youtu.be/cUGyMzWQcGM"
