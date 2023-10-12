@@ -23,12 +23,16 @@ def test_str(channel):
 
 
 def test_add(channel, channel2):
-    assert channel + channel2 == 10256808
+    channel.views = 55000
+    channel2.views = 58000
+    assert channel + channel2 == 113000
 
 
 def test_lt(channel, channel2):
-    assert channel - channel2 == -5409690
-    assert channel2 - channel == 5409690
+    channel.views = 50000
+    channel2.views = 54000
+    assert channel - channel2 == -4000
+    assert channel2 - channel == 4000
 
 
 def test_le_lt(channel, channel2):
@@ -58,7 +62,7 @@ def plvideo_c():
 
 def test_video(vileo_c):
     assert str(vileo_c) == 'GIL в Python: зачем он нужен и как с этим жить'
-    assert vileo_c.name_video == 'GIL в Python: зачем он нужен и как с этим жить'
+    assert vileo_c.title == 'GIL в Python: зачем он нужен и как с этим жить'
     assert vileo_c.id_video == 'AWX4JnAnjBE'
 
 
@@ -82,3 +86,9 @@ def test_get_info_for_playlist(playlist_class):
 
 def test_show_best_video(playlist_class):
     assert playlist_class.show_best_video() == "https://youtu.be/cUGyMzWQcGM"
+
+
+def test_video_id():
+    broken_video = Video('broken_video_id')
+    assert broken_video.title is None
+    assert broken_video.like_count is None
